@@ -5,7 +5,7 @@ from matplotlib.animation import FuncAnimation
 
 ######################################## Functions ########################################
 
-def psi0_fun(x_list, a, sig, k0):
+def psi0_fun(x_list, x0, sig, k0):
 
     """
     
@@ -141,6 +141,7 @@ def psi_fourier_recon_time_fun(N, x_list, psi_list, t_list):
             coeff = overlap_fun(x_list, psi_list, psi_eig_list)
             psi_fourier_recon_list += np.exp(- 1j/hbar * Energy_list[n-1]* t) * coeff * psi_eig_list
         psi_fourier_recon_list_time.append(psi_fourier_recon_list)
+        
     return psi_fourier_recon_list_time
 
 def exp_val_x_time_fun(x_list, t_list, psi_list_time):
@@ -257,13 +258,13 @@ def classical_x_time_fun(v, t_list, x0):
 ######################################## Parameters ########################################
 hbar = 1
 # Size of the Box
-a = 5
+a = 1
 # Width of the initial Gaussian-like wavefunction
 sig = a/10
 # Mass of the particle
 m = 1
 # Average momentum
-k0 = 1000/(10*a)
+k0 = 100/(10*a)
 p = hbar*k0
 # Position array
 x_list = np.arange(0, a, a/1000)
@@ -278,7 +279,7 @@ t_list = np.arange(0,T,T/1000)
 v = np.sqrt(p**2/m**2)
 
 ######################################## Calculation ########################################
-psi0_list = psi0_fun(x_list, a, sig, k0)
+psi0_list = psi0_fun(x_list, x0, sig, k0)
 # psi0_fourier_recon_list = psi_fourier_recon_fun(N, x_list, psi0_list)
 psi_fourier_recon_list_time = psi_fourier_recon_time_fun(N, x_list, psi0_list, t_list)
 exp_val_x_time = exp_val_x_time_fun(x_list, t_list, psi_fourier_recon_list_time)
@@ -300,7 +301,7 @@ plt.figure(figsize=(10, 6))
 plt.plot(t_list, exp_val_x_time, label=r"$\left<x(t)\right>$")
 plt.xlabel(r'Time $t$')
 plt.ylabel(r'$\left<x(t)\right>$')
-plt.plot(t_list, position_time, label=f"classical"+r" $x(t)$")
+# plt.plot(t_list, position_time, label=f"classical"+r" $x(t)$")
 plt.legend()
 plt.title(f"Time Evolution of the of Position")
 
@@ -309,7 +310,7 @@ plt.figure(figsize=(10, 6))
 plt.plot(t_list, exp_val_p_time, label=r" $\left<p(t)\right>$")
 plt.xlabel(r'Time $t$')
 plt.ylabel(r'$\left<p(t)\right>$')
-plt.plot(t_list, momentum_time, label=f"classical"+r" $p(t)$")
+# plt.plot(t_list, momentum_time, label=f"classical"+r" $p(t)$")
 plt.legend()
 plt.title(f"Time Evolution of the of Momentum")
 
