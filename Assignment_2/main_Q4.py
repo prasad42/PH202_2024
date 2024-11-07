@@ -21,7 +21,7 @@ def psi0_fun(x_list, x0, sig, k0):
 
     """
     
-    psi0_list = np.exp(-(x_list-x0)**2/(2*sig**2)) * np.exp(1j*k0*x_list)
+    psi0_list = np.exp(-(x_list-x0)**2/(2*sig**2)) * np.exp(1j*k0*(x_list))
 
     overlap = overlap_fun(x_list, psi0_list, psi0_list)
 
@@ -138,7 +138,7 @@ def psi_fourier_recon_time_fun(N, x_list, psi_list, t_list):
         psi_fourier_recon_list = np.zeros(len(x_list),dtype=complex)
         for n in range(1,N+1):
             psi_eig_list = psi_eig_fun(n,x_list,a)
-            coeff = overlap_fun(x_list, psi_list, psi_eig_list)
+            coeff = overlap_fun(x_list, psi_eig_list, psi_list)
             psi_fourier_recon_list += np.exp(- 1j/hbar * Energy_list[n-1]* t) * coeff * psi_eig_list
         psi_fourier_recon_list_time.append(psi_fourier_recon_list)
         
