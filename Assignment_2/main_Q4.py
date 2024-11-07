@@ -312,7 +312,7 @@ plt.ylabel(r'$\left<p(t)\right>$')
 plt.legend()
 plt.title(f"Time Evolution of the of Momentum")
 
-plt.show()
+# plt.show()
 
 ########################################### Animation ####################################
 
