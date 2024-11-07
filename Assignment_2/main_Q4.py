@@ -257,7 +257,7 @@ def classical_x_time_fun(v, t_list, x0):
 ######################################## Parameters ########################################
 hbar = 1
 # Size of the Box
-a = 1
+a = 5
 # Width of the initial Gaussian-like wavefunction
 sig = a/10
 # Mass of the particle
