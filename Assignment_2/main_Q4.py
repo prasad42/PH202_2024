@@ -258,13 +258,13 @@ def classical_x_time_fun(v, t_list, x0):
 ######################################## Parameters ########################################
 hbar = 1
 # Size of the Box
-a = 1
+a = 10
 # Width of the initial Gaussian-like wavefunction
 sig = a/10
 # Mass of the particle
 m = 1
 # Average momentum
-k0 = 100/(10*a)
+k0 = 1000/(10*a)
 p = hbar*k0
 # Position array
 x_list = np.arange(0, a, a/1000)
@@ -299,7 +299,7 @@ plt.figure(figsize=(10, 6))
 plt.plot(t_list, exp_val_x_time, label=r"$\left<x(t)\right>$")
 plt.xlabel(r'Time $t$')
 plt.ylabel(r'$\left<x(t)\right>$')
-# plt.plot(t_list, position_time, label=f"classical"+r" $x(t)$")
+plt.plot(t_list, position_time, label=f"classical"+r" $x(t)$")
 plt.legend()
 plt.title(f"Time Evolution of the of Position")
 
@@ -308,7 +308,7 @@ plt.figure(figsize=(10, 6))
 plt.plot(t_list, exp_val_p_time, label=r" $\left<p(t)\right>$")
 plt.xlabel(r'Time $t$')
 plt.ylabel(r'$\left<p(t)\right>$')
-# plt.plot(t_list, momentum_time, label=f"classical"+r" $p(t)$")
+plt.plot(t_list, momentum_time, label=f"classical"+r" $p(t)$")
 plt.legend()
 plt.title(f"Time Evolution of the of Momentum")
 
