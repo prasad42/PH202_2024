@@ -198,6 +198,28 @@ def exp_val_p_time_fun(x_list, t_list, psi_list_time):
 
     return exp_val_p_time
 
+def classical_x_time_fun(v, t_list, x0):
+
+    dt = t_list[1] - t_list[0]
+    position_time = np.zeros(len(t_list)) 
+
+    # Initialize position
+    position_time[0] = x0
+
+    for i in range(1,len(position_time)):
+        # Update position
+        position_time[i] = position_time[i-1] + v * dt
+        
+        # Reflect at boundaries
+        if position_time[i] <= 0:
+            position_time[i] = -position_time[i]         # Reflect and move back
+            v = -v                         # Reverse velocity
+        elif position_time[i] >= a:
+            position_time[i] = 2 * a - position_time[i]  # Reflect and move back
+            v = -v                            # Reverse velocity
+
+    return position_time
+
 ######################################## Parameters ########################################
 hbar = 1
 # Size of the Box
@@ -207,14 +229,19 @@ sig = a/10
 # Mass of the particle
 m = 1
 # Average momentum
-k0 = hbar/(10*a)
+k0 = 1/(10*a)
+p = hbar*k0
 # Position array
 x_list = np.arange(0, a, a/1000)
+# Initial postion
+x0 = a/2
 # The number of eigenstates to consider for Fourier decomposition (The more this number, the accurate will be the result)
 N = 10
 # Time array
-T = 1
+T = 10
 t_list = np.arange(0,T,T/1000)
+# Classical velocity
+v = np.sqrt(p**2/m**2)
 
 ######################################## Calculation ########################################
 psi0_list = psi0_fun(x_list, a, sig, k0)
@@ -222,6 +249,7 @@ psi0_list = psi0_fun(x_list, a, sig, k0)
 psi_fourier_recon_list_time = psi_fourier_recon_time_fun(N, x_list, psi0_list, t_list)
 exp_val_x_time = exp_val_x_time_fun(x_list, t_list, psi_fourier_recon_list_time)
 exp_val_p_time = exp_val_p_time_fun(x_list, t_list, psi_fourier_recon_list_time)
+position_time = classical_x_time_fun(v, t_list, x0)
 
 # Probability density
 plt.figure(figsize=(10, 6))
@@ -236,6 +264,7 @@ plt.figure(figsize=(10, 6))
 plt.plot(t_list, exp_val_x_time)
 plt.xlabel(r'Time $t$')
 plt.ylabel(r'$\left<x(t)\right>$')
+plt.plot(t_list, position_time)
 plt.title(f"Time Evolution of the Expectation Value of Position" + r"$\left<x(t)\right>$")
 
 # Expectation value of momentum
