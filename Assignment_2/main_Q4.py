@@ -20,7 +20,7 @@ def psi0_fun(x_list, a, sig, k0):
 
     """
     
-    psi0_list = np.exp(-(x_list-a/2)**2/(2*sig**2)) * np.exp(1j*k0*x_list)
+    psi0_list = np.exp(-(x_list-x0)**2/(2*sig**2)) * np.exp(1j*k0*x_list)
 
     overlap = overlap_fun(x_list, psi0_list, psi0_list)
 
@@ -146,7 +146,7 @@ def exp_val_x_time_fun(x_list, t_list, psi_list_time):
 
     """
 
-    The function returns the expectation value of the state at each time step
+    The function returns the expectation value of position at each time step
 
     Parameters
     ----------
@@ -191,6 +191,20 @@ def p_psi_fun(x_list, psi_list):
 
 def exp_val_p_time_fun(x_list, t_list, psi_list_time):
 
+    """
+
+    The function returns the expectation value of moementum over the time
+
+    Parameters
+    ----------
+    x_list : Position array
+
+    t_list : Time list
+
+    psi_list : The wavefunction in consideration
+    
+    """
+
     exp_val_p_time = []
     for t_ind, t in enumerate(t_list):
         exp_val_p = overlap_fun(x_list, psi_list_time[t_ind][0:-1], p_psi_fun(x_list,psi_list_time[t_ind]))
@@ -199,6 +213,21 @@ def exp_val_p_time_fun(x_list, t_list, psi_list_time):
     return exp_val_p_time
 
 def classical_x_time_fun(v, t_list, x0):
+
+    """
+
+    The function returns the position and momentum at each time step
+
+    Parameters
+    ----------
+    v : Initial velocity of the particle
+
+    t_list : Time list
+
+    x0 : Initial position
+    
+    """
+
 
     dt = t_list[1] - t_list[0]
     position_time = np.zeros(len(t_list)) 
@@ -242,7 +271,7 @@ x0 = a/2
 # The number of eigenstates to consider for Fourier decomposition (The more this number, the accurate will be the result)
 N = 10
 # Time array
-T = 10
+T = 1
 t_list = np.arange(0,T,T/1000)
 # Classical velocity
 v = np.sqrt(p**2/m**2)
@@ -274,11 +303,11 @@ plt.title(f"Time Evolution of the of Position")
 
 # Expectation value of momentum
 plt.figure(figsize=(10, 6))
-plt.plot(t_list, exp_val_p_time)
+plt.plot(t_list, exp_val_p_time, label=r" $\left<p(t)\right>$")
 plt.xlabel(r'Time $t$')
 plt.ylabel(r'$\left<p(t)\right>$')
 plt.plot(t_list, momentum_time, label=f"classical"+r" $p(t)$")
 plt.legend()
-plt.title(f"Time Evolution of the Expectation Value of Momentum" + r" $\left<p(t)\right>$")
+plt.title(f"Time Evolution of the of Momentum")
 
 plt.show()
