@@ -1,6 +1,7 @@
 ######################################## Libraries ########################################
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
 
 ######################################## Functions ########################################
 
@@ -262,14 +263,14 @@ sig = a/10
 # Mass of the particle
 m = 1
 # Average momentum
-k0 = 1/(10*a)
+k0 = 1000/(10*a)
 p = hbar*k0
 # Position array
 x_list = np.arange(0, a, a/1000)
 # Initial postion
 x0 = a/2
 # The number of eigenstates to consider for Fourier decomposition (The more this number, the accurate will be the result)
-N = 10
+N = 50
 # Time array
 T = 1
 t_list = np.arange(0,T,T/1000)
@@ -283,6 +284,8 @@ psi_fourier_recon_list_time = psi_fourier_recon_time_fun(N, x_list, psi0_list, t
 exp_val_x_time = exp_val_x_time_fun(x_list, t_list, psi_fourier_recon_list_time)
 exp_val_p_time = exp_val_p_time_fun(x_list, t_list, psi_fourier_recon_list_time)
 position_time, momentum_time = classical_x_time_fun(v, t_list, x0)
+
+# plt.plot(t_list, np.real(np.abs(psi_fourier_recon_list_time)**2)[0], label=r"$\left<x(t)\right>$")
 
 # Probability density
 plt.figure(figsize=(10, 6))
@@ -311,3 +314,37 @@ plt.legend()
 plt.title(f"Time Evolution of the of Momentum")
 
 plt.show()
+
+########################################### Animation ####################################
+
+# Function to animate the probability density evolution
+def animate(psi_fourier_recon_list_time, init_func=None):
+    fig, ax = plt.subplots(figsize=(8, 6))
+
+    # Initialize plot for probability density
+    line, = ax.plot([], [], lw=2, label=r"$|\psi(x,t)|^2$")
+    ax.set_xlim(x_list[0], x_list[-1])
+    ax.set_ylim(0, 1.1 * np.max(np.abs(psi_fourier_recon_list_time)**2).real)
+    ax.set_xlabel("Position $x$")
+    ax.set_ylabel(r"$|\psi(x,t)|^2$")
+    ax.legend()
+
+    # Initialization function for the animation
+    def init():
+        line.set_data([], [])
+        return line,
+
+    # Animation function, updates data at each frame
+    def update(frame):
+        prob_density = np.abs(psi_fourier_recon_list_time[frame])**2
+        line.set_data(x_list, prob_density.real)  # Only plot the real part
+        return line,
+
+    # Create the animation
+    anim = FuncAnimation(fig, update, frames=len(psi_fourier_recon_list_time), init_func=init, interval=50, blit=True)
+    plt.show()
+
+    return anim
+
+# Run animation
+animate(psi_fourier_recon_list_time)
