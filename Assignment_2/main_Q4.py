@@ -286,8 +286,6 @@ exp_val_x_time = exp_val_x_time_fun(x_list, t_list, psi_fourier_recon_list_time)
 exp_val_p_time = exp_val_p_time_fun(x_list, t_list, psi_fourier_recon_list_time)
 position_time, momentum_time = classical_x_time_fun(v, t_list, x0)
 
-# plt.plot(t_list, np.real(np.abs(psi_fourier_recon_list_time)**2)[0], label=r"$\left<x(t)\right>$")
-
 # Probability density
 plt.figure(figsize=(10, 6))
 plt.contourf(x_list, t_list, np.abs(psi_fourier_recon_list_time)**2, levels=200, cmap='viridis')
