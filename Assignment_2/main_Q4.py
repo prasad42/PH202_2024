@@ -88,7 +88,7 @@ def psi_fourier_recon_fun(N, x_list, psi_list):
 
     psi_fourier_recon_list = np.zeros(len(x_list),dtype=complex)
     
-    for n in range(N):
+    for n in range(1,N+1):
         psi_eig_list = psi_eig_fun(n,x_list,a)
         coeff = overlap_fun(x_list, psi_list, psi_eig_list)
         psi_fourier_recon_list += coeff * psi_eig_list
@@ -109,7 +109,7 @@ def Energies_fun(N):
 
     Energy_list = []
 
-    for n in range(N):
+    for n in range(1,N+1):
         Energy_list.append(n**2*hbar**2*np.pi**2/(2*m*a**2))
 
     return Energy_list
@@ -135,10 +135,10 @@ def psi_fourier_recon_time_fun(N, x_list, psi_list, t_list):
     Energy_list = Energies_fun(N)
     for t in t_list:
         psi_fourier_recon_list = np.zeros(len(x_list),dtype=complex)
-        for n in range(N):
+        for n in range(1,N+1):
             psi_eig_list = psi_eig_fun(n,x_list,a)
             coeff = overlap_fun(x_list, psi_list, psi_eig_list)
-            psi_fourier_recon_list += np.exp(- 1j/hbar * Energy_list[n]* t) * coeff * psi_eig_list
+            psi_fourier_recon_list += np.exp(- 1j/hbar * Energy_list[n-1]* t) * coeff * psi_eig_list
         psi_fourier_recon_list_time.append(psi_fourier_recon_list)
     return psi_fourier_recon_list_time
 
@@ -238,7 +238,7 @@ x0 = a/2
 # The number of eigenstates to consider for Fourier decomposition (The more this number, the accurate will be the result)
 N = 10
 # Time array
-T = 10
+T = 1
 t_list = np.arange(0,T,T/1000)
 # Classical velocity
 v = np.sqrt(p**2/m**2)
